@@ -4,7 +4,15 @@ var express = require("express"),
     http = require("http"),
     path = require("path"),
     redisClient = require("redis").createClient(),
-    app = express();
+    app = express(),
+    twitterWorker = require("./twitter.js");
+    
+    
+//Create arrays to track happy and sad
+var happyWords = ["happy", "cheerful","chipper","content","ecstatic","elated","glad","joyful","merry","pleased"],
+    sadWords = ["sad","dismal","distressed","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"]
+    allWords = happyWords.concat(sadWords);
+
 
 // This is our basic configuration                                                                                                                     
 app.configure(function () {
@@ -18,30 +26,41 @@ http.createServer(app).listen(3000, function(){
     console.log("Express server listening on port 3000");
 });
 
+//Create twitterWorker
+twitterWorker(allWords); //create the single array and pass it here
+
 app.get("/", function (req, res) {
     //send "Hello World" to the client as html
     res.send("Hello World!");
 });
 
-app.get("/goodbye", function (req, res) {
-    //send "Goodbye World" to the client as html
-    res.send("Goodbye World!");
-});
-
-app.get("/login", function (req, res) {
-    res.send("You need to login!");
-});
 app.get("/counts.json", function	(req, res) {
-    redisClient.get("awesome", function	(error, awesomeCount) {
-	if (error !== null) {
+  redisClient.get(allWords, function	(error, count) { //don't need quotes for array
+  var results = [];
+/*
+  var results = [];
+  results.push({
+    "key":words[i],
+    "value":counts[i]
+  });
+  [
+    {
+      "key":"happy",
+      "value":400},
+    {   
+    }
+  ]*/
+	      if (error !== null) {
             // handle error here                                                                                                                       
             console.log("ERROR: " + error);
         } else {
+            for (var i=0; i<allWords.length; i++){
             var jsonObject = {
-		"awesome":awesomeCount
+		            "happy":count  
             };
             // use res.json to return JSON objects instead of strings
             res.json(jsonObject);
+            }
         }
-    });
+  });
 });
