@@ -1,7 +1,8 @@
-var http = require("http");
-var twitter = require('ntwitter');
-var redis = require('redis');
-var credentials = require('./credentials.js');
+var express = require("express"),
+    http = require("http"),
+    path = require("path"),
+    redisClient = require("redis").createClient(),
+    app = express();
 
 //create redis client                                                                                                                                                                                                                       
 var client = redis.createClient();
