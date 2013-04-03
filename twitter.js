@@ -7,6 +7,11 @@ var express = require("express"),
 //create redis client                                                                                                                                                                                                                       
 var client = redis.createClient();
 
+//Create arrays to track happy and sad
+var happyWords = ["happy", "cheerful","chipper","content","ecstatic","elated","glad","joyful","merry","pleased"];
+var sadWords = ["sad","dismal","distressed","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"];
+
+
 var t = new twitter({
     consumer_key: credentials.consumer_key,
     consumer_secret: credentials.consumer_secret,
@@ -39,7 +44,7 @@ client.get("awesome", function (error, awesomeCount) {
 
 t.stream(
     'statuses/filter',
-    { track: ['awesome', 'cool', 'rad', 'gnarly', 'groovy'] },
+    { track: [happyWords,sadWords] },
     function(stream) {
         stream.on('data', function(tweet) {
             console.log(tweet.text);
