@@ -8,14 +8,15 @@ var express = require("express"),
     
     
 //Create arrays to track happy and sad
-var happyWords = ["happy", "cheerful","chipper","content","ecstatic","elated","glad","joyful","merry","pleased"],
-    sadWords = ["sad","dismal","distressed","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"]
-    allWords = happyWords.concat(sadWords);
+var happyWords = ["cheerful","chipper","content","happy","ecstatic","elated","glad","joyful","merry","pleased"],
+    sadWords = ["sad","dismal","distressed","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"],
+    allWords = ["cheerful","chipper","content","happy","ecstatic","elated","glad","joyful","merry","pleased","sad","dismal","distressed","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"];
 
 
 // This is our basic configuration                                                                                                                     
 app.configure(function () {
     // Define our static file directory, it will be 'public'                                                                                           
+    "use strict";
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
@@ -29,41 +30,30 @@ twitterWorker(allWords); //create the single array and pass it here
 
 app.get("/", function (req, res) {
     //send "Hello World" to the client as html
-    res.send("Hello World!");
+    res.send("Hello World!!!!!!");
 });
 
-app.get("/counts.json", function	(req, res) {
-  redisClient.get(allWords, function	(error, count) { //don't need quotes for array
-      var results = []; 
-/*
-  var results = [];
-  results.push({
-    "key":words[i],
-    "value":counts[i]
-  });
-  [
-    {
-      "key":"happy",
-      "value":400},
-    {   
-    }
-  ]*/
-	      if (error !== null) {
-            // handle error here                                                                                                                       
+app.get("/goodbye", function (req, res) {
+    //send "Goodbye World" to the client as html
+    res.send("Goodbye World!");
+});
+
+ app.get("/counts.json", function	(req, res) {
+    redisClient.mget(allWords, function	(error, count) {
+    var results = []; 
+	if (error !== null) {
+            // handle error here
             console.log("ERROR: " + error);
         } else {
-            for (var i=0; i<allWords.length; i++){
-              
+            for (var i=0; i<allWords.length; i++){             
               results.push({
-              "key":words[i],
-              "value":counts[i]
-  });            
-//var jsonObject = {
-		          //  "happy":count  
-           // };
+              "key":allWords[i],
+              "value":count[i]        
+  });        
+                
             // use res.json to return JSON objects instead of strings
-            res.json(results); //replaced jsonObject with results
-          }
+            
         }
+    }res.json(results);
     });
 });
