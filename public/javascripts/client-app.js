@@ -8,11 +8,9 @@ var main = function () {
       var resp = response.toString();
       for (var i = 0; i < happyWords.length; i++){
         if (happyWords[i]===response.key){
-        $(".happy").append("<p>"+response.key+" : "+response.value+"</p>");
         happyWordCount = happyWordCount+parseInt(response.value);
         
       }else if(sadWords[i]===response.key){
-        $(".sad").append("<p>"+response.key+" : "+response.value+"</p>");
         sadWordCount = sadWordCount+parseInt(response.value);
       }
     }
@@ -22,8 +20,15 @@ var main = function () {
   console.log("hello world! Yay!"); 
    $.getJSON("/counts.json", function (response) { 
     response.forEach(wordCounts);
-    $("body").prepend("<p>HWC: "+happyWordCount+"</p>");
-    $("body").prepend("<p>SWC: "+sadWordCount+"</p>");
+    $("body").prepend("<p>Happy Word Count: "+happyWordCount+"</p>");
+    $("body").prepend("<p>Sad Word Count: "+sadWordCount+"</p>");
+    if (happyWordCount>sadWordCount){
+      $(".sad").fadeOut(3000);
+      $(".happy").append("<p>Happy wins!</p>");
+    }else if (happyWordCount<sadWordCount){
+      $(".happy").fadeOut(3000);
+      $(".sad").prepend("<p>Sad wins...</p>");
+    }
   });
 };
 

@@ -10,7 +10,7 @@ var express = require("express"),
 //Create arrays to track happy and sad
 var happyWords = ["cheerful","chipper","content","happy","ecstatic","elated","glad","joyful","merry","pleased"],
     sadWords = ["sad","dismal","distressed","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"],
-    allWords = ["cheerful","chipper","content","happy","ecstatic","elated","glad","joyful","merry","pleased","sad","dismal","distressed","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"];
+    allWords = ["cheerful","chipper","content","happy","ecstatic","elated","glad","joyful","merry","pleased","sad","heartbroken","morbid","morose","somber","sorrowful","glum","dejected"];
 
 
 // This is our basic configuration                                                                                                                     

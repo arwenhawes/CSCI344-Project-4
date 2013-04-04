@@ -19,7 +19,6 @@ t.stream(
             //goes through each word in the array and increases the count if it's tweeted                                                                                                                                                                        
             for (var i=0; i<allWords.length; i++){
             if(tweet.text.indexOf(allWords[i] >-1)) { //switch to indexOf instead of match 
-                //console.log("HEYYYYYYYY!!!!!!");
                 redisClient.incr(allWords[i]); //need to change this to go through the array and store the # for each
             }
           }
