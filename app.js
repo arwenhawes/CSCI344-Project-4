@@ -1,5 +1,4 @@
-// We need to 'require' the                                                                                                                            
-// following modules                                                                                                                    
+// We need to 'require' the following modules                                                                                                            
 var express = require("express"),
     http = require("http"),
     path = require("path"),
@@ -20,8 +19,7 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-// Create the http server and get it to                                                                                                                
-// listen on the specified port 3000                                                                                                                   
+// Create the http server and get it to listen on the specified port 3000                                                                                                                                                                                                                                
 http.createServer(app).listen(3000, function(){
     console.log("Express server listening on port 3000");
 });
@@ -36,7 +34,7 @@ app.get("/", function (req, res) {
 
 app.get("/counts.json", function	(req, res) {
   redisClient.get(allWords, function	(error, count) { //don't need quotes for array
-  var results = [];
+      var results = []; 
 /*
   var results = [];
   results.push({
@@ -55,12 +53,17 @@ app.get("/counts.json", function	(req, res) {
             console.log("ERROR: " + error);
         } else {
             for (var i=0; i<allWords.length; i++){
-            var jsonObject = {
-		            "happy":count  
-            };
+              
+              results.push({
+              "key":words[i],
+              "value":counts[i]
+  });            
+//var jsonObject = {
+		          //  "happy":count  
+           // };
             // use res.json to return JSON objects instead of strings
-            res.json(jsonObject);
-            }
+            res.json(results); //replaced jsonObject with results
+          }
         }
-  });
+    });
 });
